@@ -50,6 +50,7 @@
  * *None*
  */
 
+#include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -59,7 +60,10 @@
 #include "reboundx.h"
 
 static void rebx_calculate_gr_full(struct reb_simulation* const sim, struct reb_particle* const particles, const int N, const double C2, const double G, const int max_iterations, const int gravity_ignore_10){
-    
+
+#ifdef _WIN32
+    assert(!"VLAs not supported by MSVC; reimplement with heap allocations (ideally)");
+#else
     double a_const[N][3]; // array that stores the value of the constant term
     double a_newton[N][3]; // stores the Newtonian term
     double a_new[N][3]; // stores the newly calculated term
@@ -228,6 +232,7 @@ static void rebx_calculate_gr_full(struct reb_simulation* const sim, struct reb_
         particles[i].ay += a_new[i][1];
         particles[i].az += a_new[i][2];
     }
+#endif
 }
 
 void rebx_gr_full(struct reb_simulation* const sim, struct rebx_force* const gr_full, struct reb_particle* const particles, const int N){

@@ -48,6 +48,9 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#ifdef _WIN32
+# include <malloc.h>
+#endif
 #include "rebound.h"
 #include "reboundx.h"
 #include "core.h"
@@ -62,7 +65,12 @@
  * Adapted from "Numerical Recipes for C," 2nd Ed., §3.3, p. 115.
  */
 static void rebx_spline(const double* x, const double* y, const int n, double* y2) {
-    double p, qn, sig, un, u[n];
+    double p, qn, sig, un;
+#ifdef _WIN32
+    double *u = _alloca(sizeof(double)*n);
+#else
+    double u[n];
+#endif
 
     y2[0] = 0.;
     u[0] = 0.0; // lower boundary condition is set to "natural"

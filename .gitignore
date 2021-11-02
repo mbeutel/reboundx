@@ -40,3 +40,5 @@ Untitled*
 .vscode/*
 *.code-workspace
 .eggs/*
+.vs/
+out/

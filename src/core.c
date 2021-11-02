@@ -765,7 +765,7 @@ void rebx_free_ap(struct rebx_node** ap){
 }
 
 void rebx_free_particle_ap(struct reb_particle* p){
-    rebx_free_ap(&p->ap);
+    rebx_free_ap((struct rebx_node **) &p->ap);
 }
 
 void rebx_free_force(struct rebx_extras* rebx, struct rebx_force* force){

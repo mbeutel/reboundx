@@ -1,0 +1,81 @@
+LIBRARY reboundx
+
+EXPORTS
+    rebx_build_str
+    rebx_version_str
+    rebx_githash_str
+
+    ; General REBOUNDx Functions
+    rebx_attach
+    rebx_detach
+    rebx_extras_cleanup
+    rebx_free
+    rebx_remove_force
+    rebx_remove_operator
+
+    rebx_output_binary
+    rebx_create_extras_from_binary
+    rebx_init_extras_from_binary
+
+
+    ; Functions for manipulating effects
+    rebx_add_operator
+    rebx_add_operator_step
+    rebx_add_force
+    rebx_load_operator
+    rebx_load_force
+    rebx_create_operator
+    rebx_create_force
+    ;rebx_add_custom_force  ; not currently implemented
+    ;rebx_add_custom_operator  ; not currently implemented
+    rebx_get_force
+    rebx_get_operator
+
+
+    ; Parameter manipulation functions
+    ;rebx_remove_param  ; not currently implemented
+    rebx_get_param
+    rebx_get_param_struct
+    rebx_set_param_pointer
+    rebx_set_param_double
+    rebx_set_param_int
+    rebx_set_param_uint32
+    rebx_register_param
+
+
+    ; Convenience functions for various effects
+    rebx_rad_calc_beta
+    rebx_rad_calc_particle_radius
+    rebx_central_force_Acentral
+    rebx_gr_hamiltonian
+    rebx_gr_full_hamiltonian
+    rebx_gr_potential_potential
+    rebx_tides_constant_time_lag_potential
+    rebx_central_force_potential
+    rebx_gravitational_harmonics_potential
+
+
+    ; Specialized Parameter manipulation functions
+    ;rebx_get_param_check  ; not currently implemented
+
+
+    ; Stepper Functions
+    rebx_ias15_step
+    rebx_kepler_step
+    rebx_jump_step
+    rebx_interaction_step
+    rebx_drift_step
+    rebx_kick_step
+
+
+    ; Interpolation Routines
+    rebx_create_interpolator
+    rebx_free_interpolator
+    rebx_interpolate
+
+
+    ; Testing Functions
+    rebx_input_inspect_binary
+    rebx_input_read_binary_field
+    rebx_input_skip_binary_field
+    rebx_error
