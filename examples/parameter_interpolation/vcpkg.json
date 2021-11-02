@@ -1,0 +1,7 @@
+{
+    "name": "reboundx-examples-parameter-interpolation",
+    "version-string": "1.0.0",
+    "dependencies": [
+        "pthreads"
+    ]
+}
