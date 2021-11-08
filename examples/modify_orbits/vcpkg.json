@@ -1,0 +1,7 @@
+{
+    "name": "reboundx-examples-modify-orbits",
+    "version-string": "1.0.0",
+    "dependencies": [
+        "pthreads"
+    ]
+}
