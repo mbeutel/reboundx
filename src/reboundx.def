@@ -79,3 +79,10 @@ EXPORTS
     rebx_input_read_binary_field
     rebx_input_skip_binary_field
     rebx_error
+
+
+    ; Helper functions
+    rebx_com_force
+    rebxtools_com_ptm
+    rebx_Edot
+    rebx_calculate_jacobi_masses
