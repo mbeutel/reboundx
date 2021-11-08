@@ -179,7 +179,7 @@ static void rebx_write_operator(struct rebx_extras* rebx, struct rebx_operator* 
 static void rebx_write_step(struct rebx_extras* rebx, struct rebx_step* step, FILE* of){
     REBX_START_OBJECT_FIELD(step, STEP);
     // Need operator name to load it from source when reading it back in
-    REBX_WRITE_DATA_FIELD(NAME, step->operator->name,   strlen(step->operator->name) + 1);
+    REBX_WRITE_DATA_FIELD(NAME, step->operator_->name,   strlen(step->operator_->name) + 1);
     REBX_WRITE_DATA_FIELD(STEP_DT_FRACTION,   &step->dt_fraction,     sizeof(step->dt_fraction));
     REBX_END_OBJECT_FIELD(step);
 }

@@ -434,7 +434,7 @@ int rebx_add_operator_step(struct rebx_extras* rebx, struct rebx_operator* opera
     if(step == NULL){
         return 0;
     }
-    step->operator = operator;
+    step->operator_ = operator;
     step->dt_fraction = dt_fraction;
     
     struct rebx_node* node = rebx_create_node(rebx);
@@ -674,7 +674,7 @@ static int rebx_remove_step_node(struct rebx_node** head, struct rebx_operator* 
     
     struct rebx_node* current = *head;
     struct rebx_step* step = current->object;
-    if(step->operator == operator){ // edge case where step is first in list
+    if(step->operator_ == operator){ // edge case where step is first in list
         *head = current->next;
         rebx_free_step(step);
         free(current);
@@ -685,7 +685,7 @@ static int rebx_remove_step_node(struct rebx_node** head, struct rebx_operator* 
     current = current->next;
     while (current != NULL){
         step = current->object;
-        if(step->operator == operator){
+        if(step->operator_ == operator){
             prev->next = current->next;
             rebx_free_step(step);
             free(current);
@@ -889,7 +889,7 @@ void rebx_pre_timestep_modifications(struct reb_simulation* sim){
     
     while(current != NULL){
         struct rebx_step* step = current->object;
-        struct rebx_operator* operator = step->operator;
+        struct rebx_operator* operator = step->operator_;
         if(sim->integrator==REB_INTEGRATOR_IAS15 && sim->ri_ias15.epsilon != 0 && operator->operator_type == REBX_OPERATOR_UPDATER){
             reb_warning(sim, "REBOUNDx: Operators that affect particle trajectories with adaptive timesteps can give spurious results. Use sim.ri_ias15.epsilon=0 for fixed timestep with IAS, or use a different integrator.");
         }
@@ -905,7 +905,7 @@ void rebx_post_timestep_modifications(struct reb_simulation* sim){
     
     while(current != NULL){
         struct rebx_step* step = current->object;
-        struct rebx_operator* operator = step->operator;
+        struct rebx_operator* operator = step->operator_;
         if(sim->integrator==REB_INTEGRATOR_IAS15 && sim->ri_ias15.epsilon != 0 && operator->operator_type == REBX_OPERATOR_UPDATER){
             reb_warning(sim, "REBOUNDx: Operators that affect particle trajectories with adaptive timesteps can give spurious results. Use sim.ri_ias15.epsilon=0 for fixed timestep with IAS, or use a different integrator.");
         }

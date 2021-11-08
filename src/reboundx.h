@@ -32,10 +32,13 @@
 #include <stdint.h>
 #include <limits.h>
 #include "rebound.h"
-#include "rebxtools.h"
 #ifndef REBXGITHASH
 #define REBXGITHASH notavailable0000000000000000000000000001 
 #endif // REBXGITHASH
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 
 extern const char* rebx_build_str;      ///< Date and time build string.
 extern const char* rebx_version_str;    ///< Version string.
@@ -214,7 +217,7 @@ struct rebx_operator{
     struct reb_simulation* sim; ///< Pointer to attached sim. Needed for error checks
     // See comments in params.py in __init__
     enum rebx_operator_type operator_type;  ///< Operator type for internal logic
-    void (*step_function) (struct reb_simulation* sim, struct rebx_operator* operator, const double dt);       ///< Function pointer to execute step
+    void (*step_function) (struct reb_simulation* sim, struct rebx_operator* operator_, const double dt);       ///< Function pointer to execute step
 };
 
 /**
@@ -222,7 +225,7 @@ struct rebx_operator{
  * @details A step is just a combination of an operator with a fraction of a timestep (see Sec. 6 of REBOUNdx paper). Can use same operator for different steps of different lengths to build higher order splitting schemes.
  */
 struct rebx_step{
-    struct rebx_operator* operator;     ///< Pointer to operator to use
+    struct rebx_operator* operator_;    ///< Pointer to operator to use
     double dt_fraction;                 ///< Fraction of sim.dt to use each time it's called
 };
 
@@ -293,7 +296,7 @@ void rebx_extras_cleanup(struct reb_simulation* sim);
 void rebx_free(struct rebx_extras* rebx);
 
 int rebx_remove_force(struct rebx_extras* rebx, struct rebx_force* force);
-int rebx_remove_operator(struct rebx_extras* rebx, struct rebx_operator* operator);
+int rebx_remove_operator(struct rebx_extras* rebx, struct rebx_operator* operator_);
 
 /**
  * @brief Save a binary file with all the effects in the simulation, as well as all particle and effect parameters.
@@ -339,8 +342,8 @@ void rebx_init_extras_from_binary(struct rebx_extras* rebx, const char* const fi
  * @return Returns a pointer to a rebx_effect structure for the effect.
  */
 //struct rebx_effect* rebx_add(struct rebx_extras* rebx, const char* name);
-int rebx_add_operator(struct rebx_extras* rebx, struct rebx_operator* operator);
-int rebx_add_operator_step(struct rebx_extras* rebx, struct rebx_operator* operator, const double dt_fraction, enum rebx_timing timing);
+int rebx_add_operator(struct rebx_extras* rebx, struct rebx_operator* operator_);
+int rebx_add_operator_step(struct rebx_extras* rebx, struct rebx_operator* operator_, const double dt_fraction, enum rebx_timing timing);
 int rebx_add_force(struct rebx_extras* rebx, struct rebx_force* force);
 struct rebx_operator* rebx_load_operator(struct rebx_extras* const rebx, const char* name);
 struct rebx_force* rebx_load_force(struct rebx_extras* const rebx, const char* name);
@@ -569,48 +572,48 @@ void* rebx_get_param_check(struct reb_simulation* sim, struct rebx_node* ap, con
 /**
  * @brief Executes a step for passed time dt using the IAS15 integrator in REBOUND.
  * @param sim Pointer to the simulation to step.
- * @param operator Unused pointer (kept for consistency with other operators). Can pass NULL.
+ * @param operator_ Unused pointer (kept for consistency with other operators). Can pass NULL.
  * @param dt timestep for which to step in simulation time units.
  */
-void rebx_ias15_step(struct reb_simulation* const sim, struct rebx_operator* const operator, const double dt);
+void rebx_ias15_step(struct reb_simulation* const sim, struct rebx_operator* const operator_, const double dt);
 /**
  * @brief Executes a Kepler step for passed time dt using the WHFast integrator in REBOUND.
  * @details Will use the coordinates and other options set in sim.ri_whfast
  * @param sim Pointer to the simulation to step.
- * @param operator Unused pointer (kept for consistency with other operators). Can pass NULL.
+ * @param operator_ Unused pointer (kept for consistency with other operators). Can pass NULL.
  * @param dt timestep for which to step in simulation time units.
  */
-void rebx_kepler_step(struct reb_simulation* const sim, struct rebx_operator* const operator, const double dt);
+void rebx_kepler_step(struct reb_simulation* const sim, struct rebx_operator* const operator_, const double dt);
 /**
  * @brief Executes a jump step for passed time dt using the WHFast integrator in REBOUND.
  * @details Will use the coordinates and other options set in sim.ri_whfast
  * @param sim Pointer to the simulation to step.
- * @param operator Unused pointer (kept for consistency with other operators). Can pass NULL.
+ * @param operator_ Unused pointer (kept for consistency with other operators). Can pass NULL.
  * @param dt timestep for which to step in simulation time units.
  */
-void rebx_jump_step(struct reb_simulation* const sim, struct rebx_operator* const operator, const double dt);
+void rebx_jump_step(struct reb_simulation* const sim, struct rebx_operator* const operator_, const double dt);
 /**
  * @brief Executes an interaction step for passed time dt using the WHFast integrator in REBOUND.
  * @details Will use the coordinates and other options set in sim.ri_whfast
  * @param sim Pointer to the simulation to step.
- * @param operator Unused pointer (kept for consistency with other operators). Can pass NULL.
+ * @param operator_ Unused pointer (kept for consistency with other operators). Can pass NULL.
  * @param dt timestep for which to step in simulation time units.
  */
-void rebx_interaction_step(struct reb_simulation* const sim, struct rebx_operator* const operator, const double dt);
+void rebx_interaction_step(struct reb_simulation* const sim, struct rebx_operator* const operator_, const double dt);
 /**
  * @brief Executes a drift step for passed time dt using the leapfrog integrator in REBOUND.
  * @param sim Pointer to the simulation to step.
- * @param operator Unused pointer (kept for consistency with other operators). Can pass NULL.
+ * @param operator_ Unused pointer (kept for consistency with other operators). Can pass NULL.
  * @param dt timestep for which to step in simulation time units.
  */
-void rebx_drift_step(struct reb_simulation* const sim, struct rebx_operator* const operator, const double dt);
+void rebx_drift_step(struct reb_simulation* const sim, struct rebx_operator* const operator_, const double dt);
 /**
  * @brief Executes a kick step for passed time dt using the leapfrog integrator in REBOUND.
  * @param sim Pointer to the simulation to step.
- * @param operator Unused pointer (kept for consistency with other operators). Can pass NULL.
+ * @param operator_ Unused pointer (kept for consistency with other operators). Can pass NULL.
  * @param dt timestep for which to step in simulation time units.
  */
-void rebx_kick_step(struct reb_simulation* const sim, struct rebx_operator* const operator, const double dt);
+void rebx_kick_step(struct reb_simulation* const sim, struct rebx_operator* const operator_, const double dt);
 /** @} */
 /** @} */
 
@@ -694,4 +697,13 @@ void rebx_input_skip_binary_field(FILE* inf, long field_size);
 /** @} */
 
 void rebx_error(struct rebx_extras* rebx, const char* const msg);
+
+
+#include "rebxtools.h"
+
+
+#ifdef __cplusplus
+} // extern "C"
+#endif // __cplusplus
+
 #endif

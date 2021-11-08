@@ -26,6 +26,10 @@
 #ifndef _REBXTOOLS_H
 #define _REBXTOOLS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 struct reb_simulation;
 struct reb_particle;
 struct reb_orbit;
@@ -36,7 +40,7 @@ enum REBX_COORDINATES;
 
 void rebx_com_force(struct reb_simulation* const sim, struct rebx_force* const force, const enum REBX_COORDINATES coordinates, const int back_reactions_inclusive, const char* reference_name, struct reb_vec3d (*calculate_force) (struct reb_simulation* const sim, struct rebx_force* const force, struct reb_particle* p, struct reb_particle* source), struct reb_particle* const particles, const int N);
 
-void rebxtools_com_ptm(struct reb_simulation* const sim, struct rebx_operator* const operator, const enum REBX_COORDINATES coordinates, const int back_reactions_inclusive, const char* reference_name, struct reb_particle (*calculate_step) (struct reb_simulation* const sim, struct rebx_operator* const operator, struct reb_particle* p, struct reb_particle* source, const double dt), const double dt);
+void rebxtools_com_ptm(struct reb_simulation* const sim, struct rebx_operator* const operator_, const enum REBX_COORDINATES coordinates, const int back_reactions_inclusive, const char* reference_name, struct reb_particle (*calculate_step) (struct reb_simulation* const sim, struct rebx_operator* const operator_, struct reb_particle* p, struct reb_particle* source, const double dt), const double dt);
 
 double rebx_Edot(struct reb_particle* const ps, const int N);
 
@@ -58,4 +62,9 @@ void rebxtools_update_com_without_particle(struct reb_particle* const com, const
 
 void rebxtools_get_com(const struct reb_simulation* const sim, const int first_N, struct reb_particle* com);
 */
+
+#ifdef __cplusplus
+} // extern "C"
+#endif // __cplusplus
+
 #endif
