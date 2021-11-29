@@ -7,7 +7,9 @@ cmake_minimum_required(VERSION 3.20)
 
 # dependencies
 find_package(rebound REQUIRED)
-find_package(pthreads REQUIRED)
+if(WIN32)
+    find_package(pthreads REQUIRED)
+endif()
 
 # Get the latest abbreviated commit hash of the working branch
 #add_custom_target(GitRevParse
