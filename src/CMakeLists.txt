@@ -12,6 +12,7 @@ if(WIN32)
 endif()
 
 # Get the latest abbreviated commit hash of the working branch
+#  Cf. https://jonathanhamberg.com/post/cmake-embedding-git-hash/ to make it work
 #add_custom_target(GitRevParse
 #    COMMAND git rev-parse HEAD
 #    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
